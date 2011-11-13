@@ -8,13 +8,13 @@ class MysqlCommand extends GeneralCommand {
 	}
 	
 	public function test() {
-		$cmd = RsyncHelper::cmd($this->dbDir);
+		$cmd = RsyncHelper::cmd($this->dbDir, true, array('whole' => true));
 		$this->localExec($cmd);
 		return $this->userAccept();
 	}
 	
 	public function execute() {
-		$cmd = RsyncHelper::cmd($this->dbDir, false);
+		$cmd = RsyncHelper::cmd($this->dbDir, false, array('whole' => true));
 		$this->localPassthru($cmd);
 	}
 	

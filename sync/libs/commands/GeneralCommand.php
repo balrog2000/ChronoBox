@@ -8,12 +8,16 @@ abstract class GeneralCommand implements ICommand {
 		}
 	}
 	protected function out($txt, $nl = true) {
-		printf("[%s] %s%s", get_class($this), $txt, $nl ? "\n" : ' ');
+		printf("[%s] %s%s", Color::DARK_MAGENTA(get_class($this)), $txt, $nl ? "\n" : ' ');
 	}
 	
 	protected function userAccept($prompt = 'OK?', $yes = 'y', $no = 'n') {
 		$prompt = $prompt." ($yes/$no)";
-		$this->out($prompt, false);
+		$this->out(Color::WHITE($prompt), false);
+		if (Configure::get('yes')) {
+			echo "\n";
+			return true;
+		}
 		$line = trim(fgets(STDIN));
 		return $line === $yes;
 	}
@@ -22,8 +26,8 @@ abstract class GeneralCommand implements ICommand {
 		$output = array();
 		$code = 1;
 		$lastLine = exec($command, &$output, &$code);
-		$this->debug(2, $command);
-		$this->debug(2, print_r($output, true));
+		$this->debug(2, Color::WHITE('Exec: ').$command);
+		$this->debug(2, Color::WHITE('Output: ').print_r($output, true));
 		return compact('output', 'code', 'lastLine');
 	}
 	

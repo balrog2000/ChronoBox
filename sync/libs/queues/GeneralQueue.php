@@ -5,7 +5,7 @@ abstract class GeneralQueue {
 	
 	
 	protected function out($txt) {
-		printf("[%s] %s\n", get_class($this), $txt);
+		printf("[%s] %s\n", Color::MAGENTA(get_class($this)), $txt);
 	}
 	
 	protected function enqueue(ICommand $command) {
@@ -28,6 +28,7 @@ abstract class GeneralQueue {
 	public function execute() {
 		$this->fixMissing();
 		foreach ($this->queued as &$queueElem) {
+			$this->out(Color::blue('Begin: '.get_class($queueElem)));
 			try {
 				$queueElem->preTest();
 				if ($queueElem->test()) {
@@ -40,13 +41,14 @@ abstract class GeneralQueue {
 				}
 			}
 			catch (FatalCommandException $e) {
-				$this->out('FATAL: '.$e->getMessage());
+				$this->out(Color::red('FATAL: '.$e->getMessage()));
 				exit;
 			}
 			catch (CommandException $e) {
-				$this->out('PROBLEM: '.$e->getMessage());
+				$this->out(Color::yellow('PROBLEM: '.$e->getMessage()));
 				$queueElem->rescue();
 			}
+			$this->out(Color::blue('End: '.get_class($queueElem)));
 		}
 	}
 } 

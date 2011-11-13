@@ -1,8 +1,20 @@
 <?php
 class RsyncHelper {
-	public static function cmd($dir, $dry = true) {
+	public static function cmd($dir, $dry = true, $options = array()) {
+		$exclude = '';
+		if (!empty($options['exclude'])) {
+			foreach ($options['exclude'] as $fName) {
+				$exclude .= ' --exclude='.$fName;
+			}
+		}
+		$whole = '';
+		if (isset($options['whole']) && $options['whole']) {
+			$whole = 'W';
+		}
 		$cmd = sprintf(
-			'rsync -avOW%siz %s %s',
+			'rsync --delete-after %s -avO%s%siz %s %s',
+			$exclude,
+			$whole,
 			$dry ? 'n' : '',
 			escapeshellarg(Configure::get('src_addr').':'.$dir),
 			escapeshellarg($dir)

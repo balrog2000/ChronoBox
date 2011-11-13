@@ -1,6 +1,10 @@
 <?php
 class HomeCommand extends GeneralCommand {
 	private $homeDir = '/home/tomek/';
+	private $exclude = array(
+		'.config/xfce4/xfconf/xfce-perchannel-xml/displays.xml',
+		'.config/compiz/compizconfig/Default.ini',
+	);
 	private $wasRunning = false;
 	private $wmctrl = 'wmctrl -l | grep -v panel | grep -v Pulpit | cut -d" " -f1 | xargs -n 1 wmctrl -i -c';
 	
@@ -16,7 +20,7 @@ class HomeCommand extends GeneralCommand {
 			throw new FatalCommandException('Cannot run from X windows');
 		}
 		$status = $this->remoteExec(ServiceHelper::status('gdm3'));
-		if ($status['code'] !== 0) {
+		if (empty($status['output'])) {
 			throw new FatalCommandException('cant query remote gdm');
 		}
 		if (strpos($status['output'][0], 'running') !== false) {
@@ -42,14 +46,14 @@ class HomeCommand extends GeneralCommand {
 	}
 	
 	public function test() {
-		$cmd = RsyncHelper::cmd($this->homeDir);
-		$this->localPassthru($cmd." | less");
+		$cmd = RsyncHelper::cmd($this->homeDir, true, array('exclude' => $this->exclude));
+		passthru($cmd." | less");
 		return $this->userAccept();
 	}
 	
 	public function execute() {
-		$cmd = RsyncHelper::cmd($this->homeDir);
-		$this->localExec($cmd);
+		$cmd = RsyncHelper::cmd($this->homeDir, false, array('exclude' => $this->exclude));
+		$this->localPassthru($cmd);
 	}
 	
 	public function post() {
