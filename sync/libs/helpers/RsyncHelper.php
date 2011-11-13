@@ -11,9 +11,14 @@ class RsyncHelper {
 		if (isset($options['whole']) && $options['whole']) {
 			$whole = 'W';
 		}
+		$progress = 'P';
+		if (isset($options['progress']) && !$options['progress']) {
+			$progress = '';
+		}
 		$cmd = sprintf(
-			'rsync --delete-after %s -aPvO%s%siz %s %s',
+			'rsync --delete-after %s -avOiz%s%s%s %s %s',
 			$exclude,
+			$progress,
 			$whole,
 			$dry ? 'n' : '',
 			escapeshellarg(Configure::get('src_addr').':'.$dir),

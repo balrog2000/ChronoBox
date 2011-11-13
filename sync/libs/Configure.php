@@ -3,14 +3,15 @@ class Configure {
 	private static $opts = array();
 	
 	public static function parseOpts() {
-		$options = getopt('s:h:q::y');
+		$options = getopt('s:h:q:c:y');
 		if (!isset($options['h']) || !isset($options['s'])) {
-			throw new Exception("Usage: ./sync.php -s src_addr -h src_hostname [-q queue] [-y{es to all}]\n");
+			throw new Exception("Usage: ./sync.php -s src_addr -h src_hostname [-q queue] [-c command {if SingleQueue specified}] [-y{es to all}]\n");
 		}
 		$config = array(
 			'src_addr' 		=> $options['s'],
 			'src_hostname'	=> $options['h'],
 			'queue'			=> isset($options['q']) ? $options['q'] : false,
+			'command'		=> isset($options['c']) ? $options['c'] : false,
 			'yes'			=> isset($options['y']),
 		);	
 		if (!$config['queue']) {

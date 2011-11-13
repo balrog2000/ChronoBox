@@ -1,18 +1,20 @@
 <?php
 class EtcCommand extends GeneralCommand {
 	private $dirService = array(
-		'/etc/apache2/' => 'apache2',
-		'/etc/mysql/'	=> 'mysql',
-		'/etc/ejabberd/' => null,
-		'/etc/phpmyadmin/' => null,
-		'/etc/hosts'	=> null,
+		'/etc/apache2/' 				=> 'apache2',
+		'/etc/mysql/'					=> 'mysql',
+		'/etc/ejabberd/' 				=> null,
+		'/etc/phpmyadmin/' 				=> null,
+		'/etc/hosts'					=> null,
+		'/etc/udev/rules.d/51-android.rules' => null,
+		'/etc/apt/'						=> null,
 	);
 	private $toMove = array();
 	
 	public function test() {
 		foreach ($this->dirService as $dir => $svc) {
 			$this->out('Testing service: '. Color::WHITE($dir));
-			$cmd = RsyncHelper::cmd($dir);
+			$cmd = RsyncHelper::cmd($dir, true, array('progress' => false));
 			$output = $this->localExec($cmd);
 			if ($output['code'] !== 0 || count($output['output']) == 4) {
 				$this->out('Nothing to move');
