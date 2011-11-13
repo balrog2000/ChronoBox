@@ -14,7 +14,7 @@ class Configure {
 			'yes'			=> isset($options['y']),
 		);	
 		if (!$config['queue']) {
-			$config['queue'] = 'SynchronizeQueue';
+			$config['queue'] = 'XQueue';
 		}
 		foreach($config as $key => $val) {
 			self::set($key, $val);

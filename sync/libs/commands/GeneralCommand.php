@@ -7,6 +7,13 @@ abstract class GeneralCommand implements ICommand {
 			$this->out($txt);
 		}
 	}
+	
+	protected function setDebug($debug) {
+		$prevDebug = $this->debug;
+		$this->debug = $debug;
+		return $prevDebug;
+	}
+	
 	protected function out($txt, $nl = true) {
 		printf("[%s] %s%s", Color::DARK_MAGENTA(get_class($this)), $txt, $nl ? "\n" : ' ');
 	}

@@ -12,7 +12,7 @@ class RsyncHelper {
 			$whole = 'W';
 		}
 		$cmd = sprintf(
-			'rsync --delete-after %s -avO%s%siz %s %s',
+			'rsync --delete-after %s -aPvO%s%siz %s %s',
 			$exclude,
 			$whole,
 			$dry ? 'n' : '',
