@@ -9,6 +9,7 @@ class ClassLoader {
 			'Command'	=> 'libs'.DS.'commands',
 			'Queue'		=> 'libs'.DS.'queues',
 			'Exception'	=> 'libs'.DS.'exceptions',
+			'Helper'	=> 'libs'.DS.'helpers',
 		);
 		if (preg_match_all('/([A-Z][a-z_0-9]*)/', $className, $matches)) {
 			$classParts = $matches[1];

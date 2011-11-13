@@ -1,15 +1,31 @@
 <?php
 class MysqlCommand extends GeneralCommand {
-	public function pre() {
-		$this->out('MysqlShutdown');
+	private $dbDir = '/var/lib/mysql/';
+	
+	public function preTest() {
+		$this->localExec(ServiceHelper::stop('mysql'));
+		$this->remoteExec(ServiceHelper::stop('mysql'));
+	}
+	
+	public function test() {
+		$cmd = RsyncHelper::cmd($this->dbDir);
+		$this->localExec($cmd);
+		return $this->userAccept();
 	}
 	
 	public function execute() {
-		print 'ala';
+		$cmd = RsyncHelper::cmd($this->dbDir, false);
+		$this->localPassthru($cmd);
+	}
+	
+	public function post() {
+		$this->localExec(ServiceHelper::start('mysql'));
+		$this->localExec(ServiceHelper::restart('memcached'));
+		$this->remoteExec(ServiceHelper::start('mysql'));
 	}
 	
 	public function rescue() {
-		$this->localExec('/etc/init.d/mysql start');
+		$this->post();
 	}
 }
 ?>

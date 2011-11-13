@@ -29,10 +29,14 @@ abstract class GeneralQueue {
 		$this->fixMissing();
 		foreach ($this->queued as &$queueElem) {
 			try {
+				$queueElem->preTest();
 				if ($queueElem->test()) {
 					$queueElem->pre();
 					$queueElem->execute();
 					$queueElem->post();
+				}
+				else {
+					$queueElem->rescue();
 				}
 			}
 			catch (FatalCommandException $e) {

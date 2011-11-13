@@ -7,8 +7,15 @@ abstract class GeneralCommand implements ICommand {
 			$this->out($txt);
 		}
 	}
-	protected function out($txt) {
-		printf("[%s] %s\n", get_class($this), $txt);
+	protected function out($txt, $nl = true) {
+		printf("[%s] %s%s", get_class($this), $txt, $nl ? "\n" : ' ');
+	}
+	
+	protected function userAccept($prompt = 'OK?', $yes = 'y', $no = 'n') {
+		$prompt = $prompt." ($yes/$no)";
+		$this->out($prompt, false);
+		$line = trim(fgets(STDIN));
+		return $line === $yes;
 	}
 	
 	private function exec($command) {
@@ -49,6 +56,10 @@ abstract class GeneralCommand implements ICommand {
 	
 	public function pre() {
 		$this->out('Empty pre()');
+	}
+	public function preTest() {
+		$this->out('Empty preTest()');
+		return true;
 	}
 	public function test() {
 		$this->out('Empty test() -> true');
