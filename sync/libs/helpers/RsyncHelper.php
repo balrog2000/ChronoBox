@@ -16,7 +16,7 @@ class RsyncHelper {
 			$progress = '';
 		}
 		$cmd = sprintf(
-			'rsync --delete-after %s -avOiz%s%s%s %s %s',
+			'rsync --delete-after %s -avOi%s%s%s %s %s',
 			$exclude,
 			$progress,
 			$whole,

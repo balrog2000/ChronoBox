@@ -23,7 +23,7 @@ class HomeCommand extends GeneralCommand {
 		if (empty($status['output'])) {
 			throw new FatalCommandException('cant query remote gdm');
 		}
-		if (strpos($status['output'][0], 'running') !== false) {
+		if (strpos($status['output'][0], 'is running') !== false) {
 			$this->wasRunning = true;
 			if ($this->userAccept('Kill remote gdm?')) {
 				$wmctrl = 'DISPLAY=:0.0; export DISPLAY; xauth merge ~tomek/.Xcookie && ('.$this->wmctrl.')';
@@ -58,9 +58,9 @@ class HomeCommand extends GeneralCommand {
 	
 	public function post() {
 		if ($this->wasRunning) {
-			$this->remoteExec(ServiceHelper::start('gdm3'));
+			#$this->remoteExec(ServiceHelper::start('gdm3'));
 		}
-		$this->localExec(ServiceHelper::start('gdm3'));
+		#$this->localExec(ServiceHelper::start('gdm3'));
 	}
 	
 	public function rescue() {

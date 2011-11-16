@@ -3,6 +3,7 @@ class EtcCommand extends GeneralCommand {
 	private $dirService = array(
 		'/etc/apache2/' 				=> 'apache2',
 		'/etc/mysql/'					=> 'mysql',
+		'/etc/nginx/'					=> 'nginx',
 		'/etc/ejabberd/' 				=> null,
 		'/etc/phpmyadmin/' 				=> null,
 		'/etc/hosts'					=> null,

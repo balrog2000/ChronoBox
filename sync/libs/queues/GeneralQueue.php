@@ -12,6 +12,20 @@ abstract class GeneralQueue {
 		$this->queued[] = $command;
 	}
 	
+	protected function enqueueMany($commands) {
+		foreach ($commands as $command) {
+			if ($command instanceof ICommand) {
+				$this->queued[] = $command;
+			}
+		}
+	}
+	
+	public function getQueue() {
+		return $this->queued;
+	}
+	
+	
+	
 	private function fixMissing() {
 		$hasHostnameCheck = false;
 		foreach ($this->queued as &$queueElem) {
